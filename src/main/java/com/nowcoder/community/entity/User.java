@@ -30,8 +30,7 @@ public class User {
                 '}';
     }
 
-    public User(int id, String username, String password, String salt, String email, int type, int status, String activationCode, String headerUrl, Date createTime) {
-        this.id = id;
+    public User(String username, String password, String salt, String email, int type, int status, String activationCode, String headerUrl, Date createTime) {
         this.username = username;
         this.password = password;
         this.salt = salt;
