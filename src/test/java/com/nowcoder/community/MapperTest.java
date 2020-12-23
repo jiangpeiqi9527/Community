@@ -86,7 +86,7 @@ public class MapperTest {
 
     @Test
     public void testInsertLoginTicket() {
-        LoginTicket loginTicket = new LoginTicket(101,"abc",0,new Date(System.currentTimeMillis() + 1000 * 60 * 10));
+        LoginTicket loginTicket = new LoginTicket(101, "abc", 0, new Date(System.currentTimeMillis() + 1000 * 60 * 10));
         loginTicketMapper.insertLoginTicket(loginTicket);
         System.out.println(loginTicket);
     }
@@ -94,7 +94,14 @@ public class MapperTest {
     @Test
     public void testSelectLoginTicketAndUpdateLoginTicket() {
         LoginTicket lt = loginTicketMapper.selectByTicket("abc");
-        loginTicketMapper.updateStatus("abc",1);
+        loginTicketMapper.updateStatus("abc", 1);
         System.out.println(loginTicketMapper.selectByTicket("abc"));
+    }
+
+    @Test
+    public void testInsertDiscussPost() {
+        DiscussPost post = new DiscussPost(156, "test", "呀哈哈", 0, 0, new Date(), 5, 10);
+        int row = discussPostMapper.insertDiscussPost(post);
+        System.out.println(row);
     }
 }

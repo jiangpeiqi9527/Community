@@ -18,4 +18,6 @@ public interface DiscussPostMapper {
     // 那么，这个参数就必须用@Param注解取别名，不然报错。
     int selectDiscussPostRows(@Param("userId") int userId); // @Param用于给参数取别名，这里呢别名和传参名一致了，没关系
 
+    int insertDiscussPost(DiscussPost discussPost);
+
 }
