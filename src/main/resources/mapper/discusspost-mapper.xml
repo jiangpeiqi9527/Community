@@ -42,4 +42,9 @@
         from discuss_post
         where id = #{id}
     </select>
+
+    <!-- 测试没有指明返回值是基本类型int会不会报错 -->
+    <update id="updateCommentCount">
+        update discuss_post set comment_count = #{commentCount} where id = #{id}
+    </update>
 </mapper>
