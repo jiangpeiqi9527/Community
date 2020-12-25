@@ -23,7 +23,7 @@
     </select>
 
     <!-- 虽然这个方法的返回值是int，但是必须加上resultType,不然报错 -->
-    <select id="selectDiscussPostRows" resultType="int">
+    <select id="selectDiscussPostRows"  resultType="int">
         select count(id)
         from discuss_post
         where status != 2
