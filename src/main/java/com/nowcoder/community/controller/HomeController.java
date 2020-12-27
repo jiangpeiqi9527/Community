@@ -4,7 +4,9 @@ import com.nowcoder.community.entity.DiscussPost;
 import com.nowcoder.community.entity.Page;
 import com.nowcoder.community.entity.User;
 import com.nowcoder.community.service.DiscussPostService;
+import com.nowcoder.community.service.LikeService;
 import com.nowcoder.community.service.UserService;
+import com.nowcoder.community.util.CommunityConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-public class HomeController {
+public class HomeController implements CommunityConstant {
 
     @Autowired
     private DiscussPostService discussPostService;
@@ -25,13 +27,16 @@ public class HomeController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private LikeService likeService;
+
     /**
      * 这个方法的作用是返回给客户端一个modelAndVeiw，model里面放数据，return 字符串，指定模板名字
+     *
      * @param model
-     * @return
-     * https://git-scm.com/book/
+     * @return https://git-scm.com/book/
      */
-    @RequestMapping(path = "/index",method = RequestMethod.GET)
+    @RequestMapping(path = "/index", method = RequestMethod.GET)
     public String getIndexPage(Model model, Page page) {
         // 方法调用前，springmvc会自动实例化Model和Page，并将Page注入Model，
         // 所以，在thymeleaf中可以直接访问Page对象中的数据
@@ -41,23 +46,27 @@ public class HomeController {
         List<DiscussPost> list = discussPostService.findDiscussPosts(0, page.getOffset(), page.getLimit());
         // 现在的list集合里面有userId，但没有username
         // 需要拼接一下，把拼接的数据装进model里
-        List<Map<String,Object>> discussPosts = new ArrayList<>();
+        List<Map<String, Object>> discussPosts = new ArrayList<>();
 
         if (list != null) {
             for (DiscussPost post : list) {
-                Map<String,Object> map = new HashMap<>();
-                map.put("post",post);
+                Map<String, Object> map = new HashMap<>();
+                map.put("post", post);
                 // 通过userId查出user
                 User user = userService.findUserById(post.getUserId());
-                map.put("user",user);
+                map.put("user", user);
+
+                long likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_POST, post.getId());
+                map.put("likeCount", likeCount);
+
                 discussPosts.add(map);
             }
         }
-        model.addAttribute("discussPosts",discussPosts);
+        model.addAttribute("discussPosts", discussPosts);
         return "/index";
     }
 
-    @RequestMapping(path = "/error",method = RequestMethod.GET)
+    @RequestMapping(path = "/error", method = RequestMethod.GET)
     public String getErrorPage() {
         return "/error/500";
     }
