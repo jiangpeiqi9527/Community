@@ -1,7 +1,9 @@
 package com.nowcoder.community.controller;
 
+import com.nowcoder.community.entity.Event;
 import com.nowcoder.community.entity.Page;
 import com.nowcoder.community.entity.User;
+import com.nowcoder.community.event.EventProducer;
 import com.nowcoder.community.service.FollowService;
 import com.nowcoder.community.service.UserService;
 import com.nowcoder.community.util.CommunityConstant;
@@ -19,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-public class FollowController implements CommunityConstant{
+public class FollowController implements CommunityConstant {
 
     @Autowired
     private FollowService followService;
@@ -30,6 +32,9 @@ public class FollowController implements CommunityConstant{
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private EventProducer eventProducer;
+
 
     @RequestMapping(path = "/follow", method = RequestMethod.POST)
     @ResponseBody
@@ -37,6 +42,15 @@ public class FollowController implements CommunityConstant{
         User user = hostHolder.getUser();
 
         followService.follow(user.getId(), entityType, entityId);
+
+        // 触发关注事件
+        Event event = new Event()
+                .setTopic(TOPIC_FOLLOW)
+                .setEntityType(entityType)
+                .setEntityId(entityId)
+                .setUserId(hostHolder.getUser().getId())
+                .setEntityUserId(entityId);
+        eventProducer.fileEvent(event);
 
         return CommunityUtil.getJSONString(0, "已关注");
     }
@@ -67,10 +81,10 @@ public class FollowController implements CommunityConstant{
         if (followees != null) {
             for (Map<String, Object> map : followees) {
                 User u = (User) map.get("user");
-                map.put("hasFollowed",hasFollowed(u.getId()));
+                map.put("hasFollowed", hasFollowed(u.getId()));
             }
         }
-        model.addAttribute("users",followees);
+        model.addAttribute("users", followees);
         return "/site/followee";
     }
 
@@ -90,10 +104,10 @@ public class FollowController implements CommunityConstant{
         if (followers != null) {
             for (Map<String, Object> map : followers) {
                 User u = (User) map.get("user");
-                map.put("hasFollowed",hasFollowed(u.getId()));
+                map.put("hasFollowed", hasFollowed(u.getId()));
             }
         }
-        model.addAttribute("users",followers);
+        model.addAttribute("users", followers);
         return "/site/follower";
     }
 

@@ -1,13 +1,7 @@
 package com.nowcoder.community;
 
-import com.nowcoder.community.dao.DiscussPostMapper;
-import com.nowcoder.community.dao.LoginTicketMapper;
-import com.nowcoder.community.dao.MessageMapper;
-import com.nowcoder.community.dao.UserMapper;
-import com.nowcoder.community.entity.DiscussPost;
-import com.nowcoder.community.entity.LoginTicket;
-import com.nowcoder.community.entity.Message;
-import com.nowcoder.community.entity.User;
+import com.nowcoder.community.dao.*;
+import com.nowcoder.community.entity.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,6 +25,9 @@ public class MapperTest {
 
     @Autowired
     private MessageMapper messageMapper;
+
+    @Autowired
+    private CommentMapper commentMapper;
 
     @Test
     public void testSelectUser() {
@@ -129,5 +126,11 @@ public class MapperTest {
 
         int i = messageMapper.selectLetterUnreadCount(131, "111_131");
         System.out.println(i);
+    }
+
+    @Test
+    public void selectCommentByIdTest() {
+        Comment comment = commentMapper.selectCommentById(1);
+        System.out.println(comment);
     }
 }
