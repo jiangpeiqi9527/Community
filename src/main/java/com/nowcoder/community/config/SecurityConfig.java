@@ -30,6 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Comm
         // 授权
         http.authorizeRequests()
                 .antMatchers(
+                        "/date",
                         "/user/setting",
                         "/user/upload",
                         "/discuss/add",
@@ -53,7 +54,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Comm
                         AUTHORITY_MODERATOR
                 )
                 .antMatchers(
-                        "/discuss/delete"
+                        "/discuss/delete",
+                        "/data/**"
                 )
                 .hasAnyAuthority(
                         AUTHORITY_ADMIN
