@@ -11,7 +11,7 @@ public interface DiscussPostMapper {
 
     // 动态sql
     // 这个方法参数虽热是动态的sql，但有三个参数，所以不是必须用@Param
-    List<DiscussPost> selectDiscussPosts(int userId, int offset, int limit);
+    List<DiscussPost> selectDiscussPosts(int userId, int offset, int limit, int orderMode);
 
     // 查询出一共有多少条数据(这是一个动态的sql，带userId的时候用于个人主页查询，不带userId的时候用于查询所有)
     // 注意：如果啊，这个sql需要动态的拼一个条件，并且这个方法有且只有一个参数，
@@ -27,5 +27,7 @@ public interface DiscussPostMapper {
     int updateType(int id, int type);
 
     int updateStatus(int id, int status);
+
+    int updateScore(int id, double score);
 
 }

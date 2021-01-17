@@ -25,8 +25,7 @@ public class DataController {
     // 统计网站UV
     @RequestMapping(path = "/data/uv", method = RequestMethod.POST)
     public String getUV(@DateTimeFormat(pattern = "yyyy-MM-dd") Date start,
-                        @DateTimeFormat(pattern = "yyyy-MM-dd") Date end,
-                        Model model) {
+                        @DateTimeFormat(pattern = "yyyy-MM-dd") Date end, Model model) {
         long uv = dataService.calculateUV(start, end);
         model.addAttribute("uvResult", uv);
         model.addAttribute("uvStartDate", start);
@@ -34,11 +33,10 @@ public class DataController {
         return "forward:/data";
     }
 
-    // 统计网站DAU
+    // 统计活跃用户
     @RequestMapping(path = "/data/dau", method = RequestMethod.POST)
     public String getDAU(@DateTimeFormat(pattern = "yyyy-MM-dd") Date start,
-                         @DateTimeFormat(pattern = "yyyy-MM-dd") Date end,
-                         Model model) {
+                         @DateTimeFormat(pattern = "yyyy-MM-dd") Date end, Model model) {
         long dau = dataService.calculateDAU(start, end);
         model.addAttribute("dauResult", dau);
         model.addAttribute("dauStartDate", start);

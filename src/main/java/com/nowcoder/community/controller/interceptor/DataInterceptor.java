@@ -30,6 +30,7 @@ public class DataInterceptor implements HandlerInterceptor {
         if (user != null) {
             dataService.recordDAU(user.getId());
         }
+
         return true;
     }
 }
